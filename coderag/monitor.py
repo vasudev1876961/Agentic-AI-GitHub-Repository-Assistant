@@ -28,7 +28,7 @@ def should_ignore_path(path: str) -> bool:
         return False
     except Exception as e:
         logger.error(f"Error checking ignore path for {path}: {str(e)}")
-        return True 
+        return True
 
 
 class CodeChangeHandler(FileSystemEventHandler):

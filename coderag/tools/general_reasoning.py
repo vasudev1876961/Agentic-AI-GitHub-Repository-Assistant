@@ -6,10 +6,12 @@ Uses Gemini with retry and robust error handling.
 """
 
 import logging
-from tenacity import retry, stop_after_attempt, wait_exponential
-from coderag.tool_registry import register_tool
+
 from google import genai
+from tenacity import retry, stop_after_attempt, wait_exponential
+
 from coderag.config import GEMINI_API_KEY, GEMINI_CHAT_MODEL
+from coderag.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)
 

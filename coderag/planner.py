@@ -7,9 +7,11 @@ Fixes:
 """
 
 import logging
+
 from coderag.search import search_code
 
 logger = logging.getLogger(__name__)
+
 
 def decide_tool(query: str) -> str:
     q = query.lower()
@@ -17,12 +19,25 @@ def decide_tool(query: str) -> str:
 
     # 0️⃣ Detect repo-related intent → ALWAYS local_search
     REPO_KEYWORDS = [
-        "repo", "repository", "project", "folder",
-        "codebase", "module", "function", "class",
-        "explain this repo", "explain repository",
-        "what does this file do", "read this code",
-        "how does this work", "flow", "architecture",
-        "embedding", "vector", "faiss", "index"
+        "repo",
+        "repository",
+        "project",
+        "folder",
+        "codebase",
+        "module",
+        "function",
+        "class",
+        "explain this repo",
+        "explain repository",
+        "what does this file do",
+        "read this code",
+        "how does this work",
+        "flow",
+        "architecture",
+        "embedding",
+        "vector",
+        "faiss",
+        "index",
     ]
     if any(k in q for k in REPO_KEYWORDS):
         logger.info("📘 Repo-intent detected → forcing 'local_search'")
@@ -30,16 +45,26 @@ def decide_tool(query: str) -> str:
 
     # 1️⃣ General factual questions → web_fetch
     GENERAL_QUESTION = [
-        "who is", "what is", "latest", "news",
-        "define", "meaning", "release", "update",
-        "information about", "history of", "founder of"
+        "who is",
+        "what is",
+        "latest",
+        "news",
+        "define",
+        "meaning",
+        "release",
+        "update",
+        "information about",
+        "history of",
+        "founder of",
     ]
     if any(k in q for k in GENERAL_QUESTION):
         logger.info("🌐 General knowledge question → using 'web_fetch'")
         return "web_fetch"
 
     # 2️⃣ File reading intent
-    if any(k in q for k in ["read file", "show file", "open file", ".py", ".txt", ".md"]):
+    if any(
+        k in q for k in ["read file", "show file", "open file", ".py", ".txt", ".md"]
+    ):
         logger.info("📄 File intent → using 'read_file'")
         return "read_file"
 

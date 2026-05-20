@@ -4,11 +4,12 @@ from typing import Any, Dict, List, Optional
 import faiss
 import numpy as np
 
+from coderag.config import TOP_K
 from coderag.embeddings import generate_embeddings
 from coderag.index import get_metadata, load_index
-from coderag.config import TOP_K
 
 logger = logging.getLogger(__name__)
+
 
 #  Search Function
 def search_code(query: str, k: Optional[int] = None) -> List[Dict[str, Any]]:
@@ -30,12 +31,16 @@ def search_code(query: str, k: Optional[int] = None) -> List[Dict[str, Any]]:
         # Load FAISS index
         index = load_index()
         if index is None or index.ntotal == 0:
-            logger.warning(" FAISS index is empty or not loaded. Please re-index the project.")
+            logger.warning(
+                " FAISS index is empty or not loaded. Please re-index the project."
+            )
             return []
 
         metadata = get_metadata()
         if not metadata:
-            logger.warning(" Metadata is empty. Ensure files were indexed successfully.")
+            logger.warning(
+                " Metadata is empty. Ensure files were indexed successfully."
+            )
             return []
 
         # === Step 1: Generate query embedding ===
@@ -70,7 +75,9 @@ def search_code(query: str, k: Optional[int] = None) -> List[Dict[str, Any]]:
                     }
                 )
             else:
-                logger.warning(f" Invalid metadata index {idx} (length={len(metadata)}).")
+                logger.warning(
+                    f" Invalid metadata index {idx} (length={len(metadata)})."
+                )
 
         # Sort descending by similarity score
         results.sort(key=lambda r: r["distance"], reverse=True)

@@ -2,13 +2,17 @@ import os
 import re
 import shutil
 from typing import Tuple
+
 from git import Repo
+
 from coderag.config import REPOS_DIR
+
 
 def _sanitize_repo_name(url: str) -> str:
     base = url.rstrip("/").split("/")[-2:]
     name = "_".join(base).replace(".git", "")
     return re.sub(r"[^A-Za-z0-9._-]+", "_", name)
+
 
 def clone_repo(github_url: str, clean_if_exists: bool = True) -> Tuple[str, str]:
     """

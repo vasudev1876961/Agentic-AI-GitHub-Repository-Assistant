@@ -15,10 +15,12 @@ TOOL_REGISTRY = {}
 
 def register_tool(name):
     """Decorator to register a new tool."""
+
     def wrapper(func):
         TOOL_REGISTRY[name] = func
         logger.info(f" Registered tool: {name}")
         return func
+
     return wrapper
 
 
@@ -31,7 +33,10 @@ def list_tools():
     """List all registered tools."""
     return list(TOOL_REGISTRY.keys())
 
-import importlib, pkgutil
+
+import importlib
+import pkgutil
+
 import coderag.tools
 
 # Auto-import all modules under coderag.tools

@@ -1,5 +1,7 @@
 import os
+
 from coderag.tool_registry import register_tool
+
 
 @register_tool("read_file")
 def read_file_tool(filepath: str) -> str:

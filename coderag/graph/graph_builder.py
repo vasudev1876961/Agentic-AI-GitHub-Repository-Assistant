@@ -1,22 +1,35 @@
-import os, re, pickle
+import os
+import pickle
+import re
+
 import networkx as nx
+
 from coderag.config import REPOS_DIR, WATCHED_DIR
 
 PY_EXT = (".py",)
 
+
 def _extract_imports(code: str):
     # simple extraction; improve later with AST if needed
-    imports = re.findall(r'^\s*(?:from\s+([\w\.]+)\s+import|import\s+([\w\.]+))', code, flags=re.MULTILINE)
+    imports = re.findall(
+        r"^\s*(?:from\s+([\w\.]+)\s+import|import\s+([\w\.]+))",
+        code,
+        flags=re.MULTILINE,
+    )
     # flatten tuple results
     cleaned = []
-    for a,b in imports:
+    for a, b in imports:
         pkg = a or b
         if pkg:
-            cleaned.append(pkg.split('.')[0])
+            cleaned.append(pkg.split(".")[0])
     return cleaned
 
+
 def _extract_funcs(code: str):
-    return re.findall(r'^\s*def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(', code, flags=re.MULTILINE)
+    return re.findall(
+        r"^\s*def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", code, flags=re.MULTILINE
+    )
+
 
 def build_code_graph(repo_dir: str) -> nx.DiGraph:
     G = nx.DiGraph()
@@ -48,9 +61,11 @@ def build_code_graph(repo_dir: str) -> nx.DiGraph:
 
     return G
 
+
 def save_graph(G: nx.DiGraph, dest: str):
     with open(dest, "wb") as f:
         pickle.dump(G, f)
+
 
 def load_graph(src: str) -> nx.DiGraph:
     with open(src, "rb") as f:

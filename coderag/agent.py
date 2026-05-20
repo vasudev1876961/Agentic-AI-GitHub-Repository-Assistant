@@ -4,17 +4,19 @@ Now with retry + OpenAI fallback for robust execution.
 """
 
 import logging
+
+from google import genai
+from openai import OpenAI
 from tenacity import retry, stop_after_attempt, wait_exponential
-from coderag.planner import decide_tool
-from coderag.tool_registry import get_tool
+
 from coderag.config import (
     GEMINI_API_KEY,
     GEMINI_CHAT_MODEL,
     OPENAI_API_KEY,
     OPENAI_CHAT_MODEL,
 )
-from google import genai  
-from openai import OpenAI 
+from coderag.planner import decide_tool
+from coderag.tool_registry import get_tool
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +25,9 @@ try:
     if not GEMINI_API_KEY:
         raise ValueError(" Gemini API key not found in environment variables.")
     gemini_client = genai.Client(api_key=GEMINI_API_KEY)
-    logger.info(f" Gemini client initialized successfully with model: {GEMINI_CHAT_MODEL}")
+    logger.info(
+        f" Gemini client initialized successfully with model: {GEMINI_CHAT_MODEL}"
+    )
 except Exception as e:
     logger.error(f" Failed to initialize Gemini client: {e}")
     gemini_client = None
@@ -38,13 +42,19 @@ except Exception as e:
     openai_client = None
 
 
+import logging
+
 # Retry Wrapper for Gemini Calls
 from tenacity import retry, stop_after_attempt, wait_exponential
-import logging
 
 logger = logging.getLogger(__name__)
 
-@retry(stop=stop_after_attempt(4), wait=wait_exponential(multiplier=2, max=12), reraise=True)
+
+@retry(
+    stop=stop_after_attempt(4),
+    wait=wait_exponential(multiplier=2, max=12),
+    reraise=True,
+)
 def call_gemini_with_retry(prompt: str) -> str:
     """
     Safely call Gemini model with automatic retries for transient errors (503, timeouts, etc.).
@@ -80,6 +90,7 @@ def call_gemini_with_retry(prompt: str) -> str:
         logger.error(f" Gemini API call failed: {e}")
         raise
 
+
 #  Main Agent Reasoning Function
 def run_agent(user_query: str) -> str:
     logger.info(f" Received query: {user_query}")
@@ -97,7 +108,9 @@ def run_agent(user_query: str) -> str:
         logger.error(f" Tool '{tool_name}' execution failed: {e}")
         return f"Error executing tool '{tool_name}': {e}"
 
-    logger.info(f" Tool '{tool_name}' output length: {len(tool_output) if tool_output else 0}")
+    logger.info(
+        f" Tool '{tool_name}' output length: {len(tool_output) if tool_output else 0}"
+    )
 
     if tool_name == "web_fetch" and tool_output and len(tool_output) > 150:
         logger.info(" Returning web_fetch output directly (no LLM call).")

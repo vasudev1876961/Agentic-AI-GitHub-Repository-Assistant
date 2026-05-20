@@ -1,1 +1,14 @@
 -e .[dev]
+sentence-transformers>=2.7.0
+faiss-cpu
+numpy
+streamlit
+google-genai
+python-dotenv
+tenacity
+watchdog
+sentence-transformers
+networkx
+GitPython
+requests
+beautifulsoup4

@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 #  Load environment variables from .env file
@@ -32,7 +33,7 @@ _default_gemini_models = ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-pro"
 
 GEMINI_CHAT_MODEL = os.getenv("GEMINI_CHAT_MODEL", "").strip()
 if not GEMINI_CHAT_MODEL:
-    GEMINI_CHAT_MODEL = "gemini-2.5-flash" 
+    GEMINI_CHAT_MODEL = "gemini-2.5-flash"
 elif GEMINI_CHAT_MODEL.startswith("models/"):
     GEMINI_CHAT_MODEL = GEMINI_CHAT_MODEL.replace("models/", "", 1)
 elif GEMINI_CHAT_MODEL not in _default_gemini_models:
@@ -64,6 +65,7 @@ IGNORE_PATHS = [
 #  Misc Settings
 TOP_K = int(os.getenv("TOP_K", "5"))
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
+
 
 #  Utility Function
 def print_config_summary():

@@ -1,19 +1,21 @@
 # ingestor.py
-import os
 import logging
+import os
 from typing import Iterable, Tuple
 
 import numpy as np
 
 from coderag.config import ALLOWED_EXTENSIONS, IGNORE_PATHS
-from coderag.index import clear_index, add_to_index, save_index
 from coderag.embeddings import generate_embeddings
+from coderag.index import add_to_index, clear_index, save_index
 
 logger = logging.getLogger(__name__)
+
 
 def _should_ignore(path: str) -> bool:
     p = path.replace("\\", "/").lower()
     return any(skip in p for skip in (s.lower() for s in IGNORE_PATHS))
+
 
 def _iter_files(root: str) -> Iterable[Tuple[str, str]]:
     """
@@ -22,7 +24,9 @@ def _iter_files(root: str) -> Iterable[Tuple[str, str]]:
     root = os.path.abspath(root)
     for dirpath, dirnames, filenames in os.walk(root):
         if _should_ignore(dirpath):
-            dirnames[:] = [d for d in dirnames if not _should_ignore(os.path.join(dirpath, d))]
+            dirnames[:] = [
+                d for d in dirnames if not _should_ignore(os.path.join(dirpath, d))
+            ]
             continue
         for fn in filenames:
             ext = os.path.splitext(fn)[1].lower()
@@ -30,6 +34,7 @@ def _iter_files(root: str) -> Iterable[Tuple[str, str]]:
                 abs_path = os.path.join(dirpath, fn)
                 rel_path = os.path.relpath(abs_path, root)
                 yield abs_path, rel_path
+
 
 def index_directory(root: str) -> int:
     """
@@ -42,7 +47,7 @@ def index_directory(root: str) -> int:
         try:
             with open(abs_path, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
-            vec = generate_embeddings(content) 
+            vec = generate_embeddings(content)
             if vec is None:
                 logger.warning(f"Skipping (no embedding): {rel_path}")
                 continue

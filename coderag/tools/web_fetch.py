@@ -1,11 +1,14 @@
-import requests
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin, unquote
-from coderag.tool_registry import register_tool
 import logging
 import re
+from urllib.parse import unquote, urljoin
+
+import requests
+from bs4 import BeautifulSoup
+
+from coderag.tool_registry import register_tool
 
 logger = logging.getLogger(__name__)
+
 
 @register_tool("web_fetch")
 def web_fetch_tool(query: str) -> str:
@@ -24,7 +27,9 @@ def web_fetch_tool(query: str) -> str:
 
         # 1️⃣ DuckDuckGo search
         search_url = f"https://duckduckgo.com/html/?q={query}"
-        res = requests.get(search_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
+        res = requests.get(
+            search_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10
+        )
         soup = BeautifulSoup(res.text, "html.parser")
 
         links = soup.find_all("a", {"class": "result__a"}, limit=5)

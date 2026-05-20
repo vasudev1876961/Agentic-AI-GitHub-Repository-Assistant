@@ -1,0 +1,47 @@
+# Virtual Environment
+.venv/
+
+# Environment Variables
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# FAISS / Vector DB Files
+*.faiss
+*.npy
+
+# Logs
+*.log
+
+# Generated Metadata
+coderag-egg-info/
+
+# Streamlit
+.streamlit/
+
+# VS Code
+.vscode/
+
+# Cloned GitHub Repositories
+repos/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing Cache
+.pytest_cache/
+
+# MyPy Cache
+.mypy_cache/
+
+# Build Files
+build/
+dist/

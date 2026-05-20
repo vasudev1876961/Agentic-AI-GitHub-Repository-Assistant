@@ -8,7 +8,6 @@ import logging
 from google import genai
 from openai import OpenAI
 
-
 from coderag.config import (
     GEMINI_API_KEY,
     GEMINI_CHAT_MODEL,

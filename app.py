@@ -6,7 +6,6 @@ from prompt_flow import execute_rag_flow
 
 from coderag.config import GEMINI_API_KEY, GEMINI_CHAT_MODEL
 
-
 # Logging Configuration
 
 logging.basicConfig(level=logging.INFO, force=True)

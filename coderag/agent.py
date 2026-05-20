@@ -7,7 +7,7 @@ import logging
 
 from google import genai
 from openai import OpenAI
-from tenacity import retry, stop_after_attempt, wait_exponential
+
 
 from coderag.config import (
     GEMINI_API_KEY,

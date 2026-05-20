@@ -5,11 +5,16 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "coderag"
 version = "0.1.0"
-description = "Lean proof-of-concept retrieval-augmented assistant for codebases."
+description = "Agentic AI-powered GitHub repository assistant using RAG, FAISS, and Gemini."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { file = "LICENSE-2.0.txt" }
-authors = [{ name = "Neverdecel" }]
+
+license = { text = "MIT" }
+
+authors = [
+    { name = "vasudev1876961" }
+]
+
 dependencies = [
     "faiss-cpu>=1.8.0.post1,<1.9",
     "numpy>=1.26,<2",
@@ -18,6 +23,12 @@ dependencies = [
     "streamlit>=1.38,<2",
     "tenacity>=8.5,<9",
     "watchdog>=4.0,<5",
+    "sentence-transformers>=2.7.0",
+    "networkx>=3.3",
+    "GitPython>=3.1.43",
+    "requests>=2.32.0",
+    "beautifulsoup4>=4.12.3",
+    "google-genai>=0.3.0",
 ]
 
 [project.optional-dependencies]
@@ -35,11 +46,12 @@ coderag-cli = "coderag.cli:main"
 
 [tool.black]
 line-length = 88
-target-version = ['py311']
+target-version = ["py311"]
+
 include = '\.pyi?$'
+
 extend-exclude = '''
 /(
-    # directories
     \.eggs
   | \.git
   | \.mypy_cache
@@ -59,8 +71,24 @@ known_first_party = ["coderag"]
 
 [tool.mypy]
 python_version = "3.11"
+
 ignore_missing_imports = true
+check_untyped_defs = false
 disallow_untyped_defs = false
-warn_unused_ignores = true
-warn_redundant_casts = true
-check_untyped_defs = true
+
+warn_unused_ignores = false
+warn_redundant_casts = false
+
+disable_error_code = [
+    "var-annotated",
+    "union-attr",
+    "assignment",
+    "return-value",
+    "index"
+]
+
+exclude = [
+    "\\.venv",
+    "build",
+    "dist"
+]

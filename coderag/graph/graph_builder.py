@@ -4,8 +4,6 @@ import re
 
 import networkx as nx
 
-from coderag.config import REPOS_DIR, WATCHED_DIR
-
 PY_EXT = (".py",)
 
 

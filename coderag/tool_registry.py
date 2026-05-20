@@ -5,7 +5,11 @@ This module registers all available tools (local + external)
 that the agent can call when it needs to perform specific actions.
 """
 
+import importlib
 import logging
+import pkgutil
+
+import coderag.tools
 
 logger = logging.getLogger(__name__)
 
@@ -33,11 +37,6 @@ def list_tools():
     """List all registered tools."""
     return list(TOOL_REGISTRY.keys())
 
-
-import importlib
-import pkgutil
-
-import coderag.tools
 
 # Auto-import all modules under coderag.tools
 for _, modname, _ in pkgutil.iter_modules(coderag.tools.__path__):

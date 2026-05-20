@@ -3,8 +3,6 @@ import logging
 import os
 from typing import Iterable, Tuple
 
-import numpy as np
-
 from coderag.config import ALLOWED_EXTENSIONS, IGNORE_PATHS
 from coderag.embeddings import generate_embeddings
 from coderag.index import add_to_index, clear_index, save_index

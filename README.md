@@ -17,7 +17,7 @@ CodeRAG is an Agentic AI system that clones GitHub repositories, semantically in
 - Streamlit-based interactive UI
 - CLI support for terminal querying
 - Modular plugin-based architecture
-- Unit testing support
+- Unit testing support.
 
 ---
 
